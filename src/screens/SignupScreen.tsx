@@ -69,10 +69,13 @@ const SignupScreen = () => {
     );
   };
 
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSignup = async () => {
     const birth = `${birthYear}-${birthMonth}-${birthDay}`;
-    console.log('[DEBUG] handleSignup 시작'); // ✅ 여기 추가
-    console.log('이메일:', email);
 
     if (
       !email ||
@@ -85,6 +88,11 @@ const SignupScreen = () => {
       !birthDay
     ) {
       Alert.alert('모든 항목을 입력해주세요.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      Alert.alert('이메일 형식 오류', '올바른 이메일을 입력해주세요.');
       return;
     }
 
@@ -135,7 +143,7 @@ const SignupScreen = () => {
       <TextInput
         placeholder="이메일"
         value={email}
-        onChangeText={text => setEmail(text.trim())} // ✅ 공백 제거
+        onChangeText={text => setEmail(text.trim())}
         style={styles.input}
         keyboardType="email-address"
         autoCapitalize="none"
